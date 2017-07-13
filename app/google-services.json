@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "579536629521",
+    "firebase_url": "https://locationapp-b9937.firebaseio.com",
+    "project_id": "locationapp-b9937",
+    "storage_bucket": "locationapp-b9937.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:579536629521:android:488d432283275f39",
+        "android_client_info": {
+          "package_name": "com.example.ibrahim_01.locationapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "579536629521-t0re98njlu00e4svkhl4avglkem39hs6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNUGn3Jfi79O5OHThnc6qS8C5a_AuC33k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
