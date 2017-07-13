@@ -1,5 +1,6 @@
 package com.example.ibrahim_01.locationapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,12 +28,21 @@ public class LoginActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getBaseContext(),"yos kesa hae",Toast.LENGTH_LONG);
+                Toast.makeText(getApplicationContext(),"yos kesa hae",Toast.LENGTH_LONG).show();
                 Log.d(TAG,"yos console pae agya");
             }
         });
 
         buttonRegister = (Button) findViewById(R.id.btnRegister);
+
+        buttonRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new  Intent(getBaseContext(),RegisterActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
         email = (EditText) findViewById(R.id.editTextEmail);
 
