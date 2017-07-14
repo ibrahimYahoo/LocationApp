@@ -1,5 +1,6 @@
 package com.example.ibrahim_01.locationapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -25,29 +26,31 @@ public class LoginActivity extends AppCompatActivity {
     private Button buttonLogin;
 
 
-    //private FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth;
+
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        firebaseAuth = FirebaseAuth.getInstance();
 
+        if(firebaseAuth.getCurrentUser() != null){
+            finish();
+            Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
+            startActivity(intent);
+        }
 
-        buttonLogin = (Button) findViewById(R.id.btnLogin);
+        //buttonLogin = (Button) findViewById(R.id.btnLogin);
 
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"yos kesa hae",Toast.LENGTH_LONG).show();
-                Log.d(TAG,"yos console pae agya");
-            }
-        });
 
         buttonRegister = (Button) findViewById(R.id.btnRegister);
 
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
                 Intent intent = new Intent(getApplicationContext(),RegisterActivity.class);
                 startActivity(intent);
             }
@@ -60,6 +63,33 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onClickLogin(View view){
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.show();
+
+        String email =  email1.getText().toString().trim();
+        String password = password1.getText().toString().trim();
+
+
+        firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+
+                if(task.isSuccessful()){
+                    progressDialog.dismiss();
+                    Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
+                    startActivity(intent);
+
+
+                }else {
+                    progressDialog.dismiss();
+
+                    Toast.makeText(getApplicationContext(),"yos nhe huwa",Toast.LENGTH_LONG).show();
+
+                }
+            }
+        });
+
 
 
 
