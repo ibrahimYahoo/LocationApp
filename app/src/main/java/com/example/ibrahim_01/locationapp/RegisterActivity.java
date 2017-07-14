@@ -1,8 +1,10 @@
 package com.example.ibrahim_01.locationapp;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +23,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText password1;
 
     private FirebaseAuth firebaseAuth;
+    public String Tag = "tag";
 
 
     @Override
@@ -29,7 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
 
-        email1 = (EditText) findViewById(R.id.txtEmailReg);
+        email1 = (EditText) findViewById(R.id.txtEmainInReg);
 
         password1 = (EditText) findViewById(R.id.txtPassInReg);
 
@@ -46,8 +49,13 @@ public class RegisterActivity extends AppCompatActivity {
         firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+
+
                 if(task.isSuccessful()){
                     Toast.makeText(getApplicationContext(),"yos firebase hae",Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                    startActivity(intent);
+
 
                 }
                 else {
