@@ -36,7 +36,7 @@ public class ProfileActivity extends AppCompatActivity {
         Log.d(Tag,user.getEmail());
 
         try {
-            welcomeEmail.setText("Welcome" + user.getEmail());
+            welcomeEmail.setText("Welcome " + user.getEmail());
         }
         catch (Exception e){
             Log.d(Tag,e.toString());
@@ -48,7 +48,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void onClickLogoutProfile(View view){
 
+
         firebaseAuth.signOut();
+        finish();
         Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
         startActivity(intent);
 
