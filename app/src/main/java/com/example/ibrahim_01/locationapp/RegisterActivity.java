@@ -23,6 +23,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -32,8 +36,14 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText password1;
     private EditText ConfirmpPssword1;
 
+    private EditText username;
+
+    private DatabaseReference databaseReference;
+
+
 
     private FirebaseAuth firebaseAuth;
+    FirebaseUser user;
     public String TAG = "tag";
 
     private ProgressDialog progressDialog;
@@ -50,6 +60,9 @@ public class RegisterActivity extends AppCompatActivity {
 
         ConfirmpPssword1 = (EditText) findViewById(R.id.txtConfirmPass);
 
+        username = (EditText) findViewById(R.id.txtNameReg);
+
+
     }
 
 
@@ -63,6 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
             String email = email1.getText().toString().trim();
             String password = password1.getText().toString().trim();
             String confirmPassword = ConfirmpPssword1.getText().toString().trim();
+            String username1 = username.getText().toString().trim();
 
             if (TextUtils.isEmpty(email)) {
                 Toast.makeText(getApplicationContext(), "Please Enter Email", Toast.LENGTH_LONG).show();
@@ -72,6 +86,11 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             if (TextUtils.isEmpty(password)) {
+                Toast.makeText(getApplicationContext(), "Please Enter Password", Toast.LENGTH_LONG).show();
+                return;
+
+            }
+            if (TextUtils.isEmpty(username1)) {
                 Toast.makeText(getApplicationContext(), "Please Enter Password", Toast.LENGTH_LONG).show();
                 return;
 
@@ -96,6 +115,35 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                     if (task.isSuccessful()) {
+                        /*String username1 = username.getText().toString().trim();
+
+                        Username username = new  Username();
+                        databaseReference = FirebaseDatabase.getInstance().getReference();
+*/
+                       // databaseReference.child()
+
+
+                        String username1 = username.getText().toString().trim();
+
+                        FirebaseUser user = firebaseAuth.getInstance().getCurrentUser();
+
+
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(username1)
+                              //  .setPhotoUri(Uri.parse("https://example.com/jane-q-user/profile.jpg"))
+                                .build();
+
+
+
+                        user.updateProfile(profileUpdates)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d(TAG, "User profile updated.");
+                                        }
+                                    }
+                                });
                         progressDialog.dismiss();
 
                         //Toast.makeText(getApplicationContext(), "yos firebase hae", Toast.LENGTH_LONG).show();
@@ -141,8 +189,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         }catch (Exception e){
             progressDialog.dismiss();
-            Toast.makeText(getApplicationContext(), "Network error last catch", Toast.LENGTH_LONG).show();
-
+Log.d(TAG,e.toString());
 
         }
 
