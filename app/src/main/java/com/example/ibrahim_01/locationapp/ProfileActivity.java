@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -17,6 +18,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Button Logout;
     private FirebaseAuth firebaseAuth;
     public static String Tag = "logs";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +37,8 @@ public class ProfileActivity extends AppCompatActivity {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         Log.d(Tag,user.getEmail());
 
-        try {
+
             welcomeEmail.setText("Welcome " + user.getEmail());
-        }
-        catch (Exception e){
-            Log.d(Tag,e.toString());
-        }
 
         Logout = (Button) findViewById(R.id.btnLogoutProfile);
 
