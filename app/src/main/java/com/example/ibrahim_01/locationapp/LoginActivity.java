@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if(firebaseAuth.getCurrentUser() != null){
             finish();
-            Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
+            Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
             startActivity(intent);
         }
 
@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(task.isSuccessful()){
                     progressDialog.dismiss();
-                    Intent intent = new Intent(getApplicationContext(),ProfileActivity.class);
+                    Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
                     startActivity(intent);
 
 
