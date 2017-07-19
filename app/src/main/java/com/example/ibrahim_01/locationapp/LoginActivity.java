@@ -24,6 +24,8 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 import org.w3c.dom.Text;
 
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity {
 
     public static  String TAG = "Logs";
@@ -102,6 +104,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(task.isSuccessful()){
                     progressDialog.dismiss();
+                    finish();
                     Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
                     startActivity(intent);
 
