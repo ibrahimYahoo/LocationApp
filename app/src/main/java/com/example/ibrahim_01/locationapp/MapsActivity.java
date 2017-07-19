@@ -1,6 +1,8 @@
 package com.example.ibrahim_01.locationapp;
 
+import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -9,6 +11,9 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,6 +27,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 import java.util.Locale;
@@ -29,6 +35,7 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
 
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationClient;
+    private FirebaseAuth firebaseAuth;
 
 
     @Override
@@ -69,7 +76,8 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
 
         if(Build.VERSION.SDK_INT < 23) {
 
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
 
         }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -78,6 +86,45 @@ public class MapsActivity extends AppCompatActivity  implements OnMapReadyCallba
         mapFragment.getMapAsync(this);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_main,menu);
+        return super.onCreateOptionsMenu(menu);
+        //CreateMenu(menu);
+        //return true;
+    }
+
+//    private void CreateMenu(Menu menu)
+//    {
+//        MenuItem menuItem = menu.add(0,0,0,"Logout");
+//        {
+//            menuItem.setIcon(R.drawable.common_google_signin_btn_icon_dark);
+//            menuItem.setShowAsAction(menuItem.SHOW_AS_ACTION_IF_ROOM);
+//        }
+//
+//    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        return MenuChoice(menuItem);
+    }
+
+    private boolean MenuChoice(MenuItem menuItem)
+    {
+        if (menuItem.getItemId() == R.id.action_logout) {
+
+            firebaseAuth = FirebaseAuth.getInstance();
+            firebaseAuth.signOut();
+            finish();
+            Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+            startActivity(intent);
+
+
+
+        }
+        return false;
+    }
 
     /**
      * Manipulates the map once available.

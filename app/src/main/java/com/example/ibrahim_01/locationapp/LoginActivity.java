@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -70,6 +72,8 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
+
     public void onClickLogin(View view){
 
         String email =  email1.getText().toString().trim();
@@ -91,7 +95,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Setting up Your Profile");
+        //progressDialog.set
+        progressDialog.setMessage("Logging in...");
         progressDialog.show();
 
 
@@ -102,6 +107,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(task.isSuccessful()){
                     progressDialog.dismiss();
+                    finish();
                     Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
                     startActivity(intent);
 
@@ -113,16 +119,16 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         throw task.getException();
                     }  catch (FirebaseAuthInvalidCredentialsException e) {
-                        Toast.makeText(getApplicationContext(), "please enter valid information", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Please enter valid information!", Toast.LENGTH_LONG).show();
 
                     }  catch (FirebaseAuthInvalidUserException e) {
-                        Toast.makeText(getApplicationContext(), "User not found", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "User not found!", Toast.LENGTH_LONG).show();
 
                     }catch (FirebaseNetworkException e) {
-                        Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Network Error!", Toast.LENGTH_LONG).show();
 
                     } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), "Server Error", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Server Error!", Toast.LENGTH_LONG).show();
                     }
 
 
