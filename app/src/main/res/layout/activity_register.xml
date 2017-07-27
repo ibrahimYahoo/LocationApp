@@ -30,8 +30,8 @@
             android:layout_weight="1"
             android:backgroundTint="@color/colorPrimary"
             android:ems="7"
-            android:hint="Full Name"
             android:inputType="textPersonName"
+            android:text="ibrahim ali asghar"
             android:textColor="@color/colorPrimary"
             android:textColorHint="@color/colorPrimary"
             android:textCursorDrawable="@drawable/color_cursor" />
@@ -44,12 +44,11 @@
             android:backgroundTint="@color/colorPrimary"
             android:ems="7"
             android:hint="Mobile Number"
-            android:inputType="textPassword"
+            android:inputType="number"
+            android:text="616161641"
             android:textColor="@color/colorPrimary"
             android:textColorHint="@color/colorPrimary"
             android:textCursorDrawable="@drawable/color_cursor" />
-
-
 
 
         <EditText
@@ -61,6 +60,7 @@
             android:ems="7"
             android:hint="Email"
             android:inputType="textEmailAddress"
+            android:text="ibrahim@gmail.com"
             android:textColor="@color/colorPrimary"
             android:textColorHint="@color/colorPrimary"
             android:textCursorDrawable="@drawable/color_cursor" />
@@ -75,6 +75,7 @@
             android:ems="7"
             android:hint="Password"
             android:inputType="textPassword"
+            android:text="gmail52786"
             android:textColor="@color/colorPrimary"
             android:textColorHint="@color/colorPrimary"
             android:textCursorDrawable="@drawable/color_cursor" />
@@ -89,6 +90,7 @@
             android:ems="7"
             android:hint="Confirm Password"
             android:inputType="textPassword"
+            android:text="gmail52786"
             android:textColor="@color/colorPrimary"
             android:textColorHint="@color/colorPrimary"
             android:textCursorDrawable="@drawable/color_cursor" />

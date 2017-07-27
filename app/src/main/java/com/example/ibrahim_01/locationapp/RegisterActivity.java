@@ -24,6 +24,8 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.Query;
+
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -35,6 +37,8 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText email1;
     private EditText password1;
     private EditText ConfirmpPssword1;
+    private EditText phoneNo;
+
 
     private EditText username;
 
@@ -62,6 +66,9 @@ public class RegisterActivity extends AppCompatActivity {
 
         username = (EditText) findViewById(R.id.txtNameReg);
 
+        phoneNo = (EditText) findViewById(R.id.txtMobileInReg);
+
+
 
     }
 
@@ -77,6 +84,8 @@ public class RegisterActivity extends AppCompatActivity {
             String password = password1.getText().toString().trim();
             String confirmPassword = ConfirmpPssword1.getText().toString().trim();
             String username1 = username.getText().toString().trim();
+            String strPhoneNo = phoneNo.getText().toString().trim();
+
 
             if (TextUtils.isEmpty(email)) {
                 Toast.makeText(getApplicationContext(), "Please Enter Email", Toast.LENGTH_LONG).show();
@@ -95,6 +104,15 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
 
             }
+
+
+
+            if (TextUtils.isEmpty(strPhoneNo)) {
+                Toast.makeText(getApplicationContext(), "Please Enter Phone number", Toast.LENGTH_LONG).show();
+                return;
+
+            }
+
 
             boolean resultOfComparison = password.equals(confirmPassword);
 
@@ -115,38 +133,48 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                     if (task.isSuccessful()) {
-                        /*String username1 = username.getText().toString().trim();
 
-                        Username username = new  Username();
-                        databaseReference = FirebaseDatabase.getInstance().getReference();
-*/
-                       // databaseReference.child()
 
 
                         String username1 = username.getText().toString().trim();
 
+                        double strPhoneNo =   Double.parseDouble( phoneNo.getText().toString().trim());
+
+                        databaseReference = FirebaseDatabase.getInstance().getReference();
+
                         FirebaseUser user = firebaseAuth.getInstance().getCurrentUser();
 
+                        userClass userClassObj = new  userClass(username1,0,0,strPhoneNo,true);
 
-                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                .setDisplayName(username1)
-                              //  .setPhotoUri(Uri.parse("https://example.com/jane-q-user/profile.jpg"))
-                                .build();
+                        databaseReference.child(user.getUid()).setValue(userClassObj);
 
 
 
-                        user.updateProfile(profileUpdates)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Log.d(TAG, "User profile updated.");
-                                        }
-                                    }
-                                });
+
+
+
+
+
+//                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+//                                .setDisplayName(username1)
+//                              //  .setPhotoUri(Uri.parse("https://example.com/jane-q-user/profile.jpg"))
+//                                .build();
+//
+//
+//
+//                        user.updateProfile(profileUpdates)
+//                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                    @Override
+//                                    public void onComplete(@NonNull Task<Void> task) {
+//                                        if (task.isSuccessful()) {
+//                                            Log.d(TAG, "User profile updated.");
+//                                        }
+//                                    }
+//                                });
                         progressDialog.dismiss();
 
                         //Toast.makeText(getApplicationContext(), "yos firebase hae", Toast.LENGTH_LONG).show();
+                        finish();
                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(intent);
 

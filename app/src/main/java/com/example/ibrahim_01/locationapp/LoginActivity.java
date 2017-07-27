@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Setting up Your Profile");
+        progressDialog.setMessage("Signing In");
         progressDialog.show();
 
 
