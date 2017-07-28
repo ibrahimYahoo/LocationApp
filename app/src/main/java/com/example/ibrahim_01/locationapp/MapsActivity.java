@@ -19,6 +19,8 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -48,6 +50,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
@@ -75,10 +78,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean setCamera = true;
     private float zoom = (float)15;
     final Marker[] userMarkers = new Marker[1000];
+    List<String> listStrings = new ArrayList<String>();
+
     HashMap<String ,Marker> hashMapMarker = new HashMap<>();
     public int count2 = 0;
     int counterForTotalSnaps = 0;
     public  int counterForMarker = 0;
+    private AutoCompleteTextView text;
 
 
 
@@ -98,6 +104,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        text=(AutoCompleteTextView)findViewById(R.id.usersAutoCompleteTxtView);
+
+        ArrayAdapter adapter = new
+                ArrayAdapter(this,android.R.layout.simple_list_item_1,listStrings);
+        text.setAdapter(adapter);
+        text.setThreshold(1);
+
+
+
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
             checkLocationPermission();
@@ -109,35 +124,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
-                databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        Query query = databaseReference.orderByChild("status").equalTo(true);
 
-        query.addChildEventListener(new ChildEventListener() {
+        //Query query = databaseReference.orderByChild("status").equalTo(true);
+
+        databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s)
             {
 
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                userClass userClassObj = dataSnapshot.getValue(userClass.class);
 
 
                     if (dataSnapshot.getKey().equals(user.getUid())) {
 
 
+
+
+                    }
+                    else if(hashMapMarker.containsKey(dataSnapshot.getKey())){
+
+                        Marker marker = hashMapMarker.get(dataSnapshot.getKey());
+
+                        marker.setPosition(new LatLng(userClassObj.getLatitude(),userClassObj.getLongitude()));
+
                     }
                     else {
 
-                        userClass userClassObj = dataSnapshot.getValue(userClass.class);
 
-                        userMarkers[counterForMarker] = mMap.addMarker(new MarkerOptions()
+                        Marker marker = mMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(userClassObj.getLatitude(), userClassObj.getLongitude()))
                                 .anchor(0.5f, 0.5f)
                                 .title(userClassObj.getFullName())
                                 .snippet("newly added marker from child")
                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 
-                        hashMapMarker.put(dataSnapshot.getKey(),userMarkers[counterForMarker]);
+                        hashMapMarker.put(dataSnapshot.getKey(),marker);
+
+                        listStrings.add(userClassObj.getFullName());
 
 
                         counterForMarker++;
@@ -191,89 +218,89 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
 
-        query.addValueEventListener(new ValueEventListener() {
-
-                //    int count2 = 0;
-
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-
-//                         int count = -1;
+//        query.addValueEventListener(new ValueEventListener() {
 //
-//                        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()  ){
+//                //    int count2 = 0;
 //
-//                            userClass userClassObj = userSnapshot.getValue(userClass.class);
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
 //
-//                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//
-//
-//
-//                            count++;
-//                            counterForTotalSnaps++;
-//
-//                            Log.i("dadasnap",dataSnapshot.getValue().toString());
-//                            if( userSnapshot.getKey().equals(user.getUid()) ){
-//
-//                                    continue;
-//                            }
-//
-//                            try {
-//                                if(userMarkers[count] != null){
-//
-//                                if (userMarkers[count].getPosition().latitude == userClassObj.getLatitude() && userMarkers[count].getPosition().longitude == userClassObj.getLongitude()) {
-//
-//
-//                                } else {
-//
-//                                      userMarkers[count].setPosition(new LatLng(userClassObj.getLatitude(),userClassObj.getLongitude()));
-//
-////                                    userMarkers[count].remove();
+////                         int count = -1;
+////
+////                        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()  ){
+////
+////                            userClass userClassObj = userSnapshot.getValue(userClass.class);
+////
+////                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+////
+////
+////
+////                            count++;
+////                            counterForTotalSnaps++;
+////
+////                            Log.i("dadasnap",dataSnapshot.getValue().toString());
+////                            if( userSnapshot.getKey().equals(user.getUid()) ){
+////
+////                                    continue;
+////                            }
+////
+////                            try {
+////                                if(userMarkers[count] != null){
+////
+////                                if (userMarkers[count].getPosition().latitude == userClassObj.getLatitude() && userMarkers[count].getPosition().longitude == userClassObj.getLongitude()) {
+////
+////
+////                                } else {
+////
+////                                      userMarkers[count].setPosition(new LatLng(userClassObj.getLatitude(),userClassObj.getLongitude()));
+////
+//////                                    userMarkers[count].remove();
+//////                                    userMarkers[count] = mMap.addMarker(new MarkerOptions()
+//////                                            .position(new LatLng(userClassObj.getLatitude(), userClassObj.getLongitude()))
+//////                                            .anchor(0.5f, 0.5f)
+//////                                            .title(userClassObj.getFullName())
+//////                                            .snippet("from else clause")
+//////                                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+////
+////
+////
+////
+////                                }
+////                                }
+////                                else {
+////
+////                                    try {
+////                                        userMarkers[count].remove();
+////                                    }
+////                                    catch (Exception e){
+////                                        Log.i("dada",e.toString());
+////                                    }
 ////                                    userMarkers[count] = mMap.addMarker(new MarkerOptions()
 ////                                            .position(new LatLng(userClassObj.getLatitude(), userClassObj.getLongitude()))
 ////                                            .anchor(0.5f, 0.5f)
 ////                                            .title(userClassObj.getFullName())
-////                                            .snippet("from else clause")
-////                                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+////                                            .snippet("first time")
+////                                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+////
+////                                }
+////                            }
+////                            catch (Exception e ){
+////                                Log.i("dada",e.toString());
+////                            }
+////                            count2++;
+////                        }
+////
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                        Log.i("dadaDouble",  databaseError.toString() );
 //
 //
-//
-//
-//                                }
-//                                }
-//                                else {
-//
-//                                    try {
-//                                        userMarkers[count].remove();
-//                                    }
-//                                    catch (Exception e){
-//                                        Log.i("dada",e.toString());
-//                                    }
-//                                    userMarkers[count] = mMap.addMarker(new MarkerOptions()
-//                                            .position(new LatLng(userClassObj.getLatitude(), userClassObj.getLongitude()))
-//                                            .anchor(0.5f, 0.5f)
-//                                            .title(userClassObj.getFullName())
-//                                            .snippet("first time")
-//                                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-//
-//                                }
-//                            }
-//                            catch (Exception e ){
-//                                Log.i("dada",e.toString());
-//                            }
-//                            count2++;
-//                        }
-//
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                        Log.i("dadaDouble",  databaseError.toString() );
-
-
-                    }
-                });
+//                    }
+//                });
 
 
 
@@ -285,12 +312,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onPause() {
 
 
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-
-        FirebaseUser user = firebaseAuth.getInstance().getCurrentUser();
-
-
-        databaseReference.child(user.getUid()).child("status").setValue(false);
+//        databaseReference = FirebaseDatabase.getInstance().getReference();
+//
+//        FirebaseUser user = firebaseAuth.getInstance().getCurrentUser();
+//
+//
+//        databaseReference.child(user.getUid()).child("status").setValue(false);
 
 
 
