@@ -31,7 +31,7 @@
             android:backgroundTint="@color/colorPrimary"
             android:ems="7"
             android:inputType="textPersonName"
-            android:text="ibrahim ali asghar"
+            android:text="User 2"
             android:textColor="@color/colorPrimary"
             android:textColorHint="@color/colorPrimary"
             android:textCursorDrawable="@drawable/color_cursor" />
@@ -60,7 +60,7 @@
             android:ems="7"
             android:hint="Email"
             android:inputType="textEmailAddress"
-            android:text="ibrahim@gmail.com"
+            android:text="user2@gmail.com"
             android:textColor="@color/colorPrimary"
             android:textColorHint="@color/colorPrimary"
             android:textCursorDrawable="@drawable/color_cursor" />
